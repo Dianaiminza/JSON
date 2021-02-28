@@ -1,54 +1,46 @@
 
-import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import AddCat from './component/AddCat.js';
-import UpdateCat from './component/UpdateCat.js';
-import CatsList from './component/CatsList.js';
-import Cat from    './component/Cat.js';
-import{Link,Switch,Route}from 'react-router-dom';
-
+import Home from './pages/Home';
+import LogIn from './pages/LogIn';
+import{Switch,Route,}from 'react-router-dom';
+import NoMatch  from './pages/404Page';
 import React, { Component } from 'react';
-class App extends Component {
- 
-
-componentDidMount() {
+import SignUp from './pages/SignUp'
+import CatsList from './component/CatsList';
+import UpdateCat from './component/UpdateCat';
+ export default class App extends Component {
+  state={
+  isLog:false
  }
-   render() {
-   
-        return (
-           
-            <div className="App">  
-       
-           <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <a href={"/cats"} className="navbar-brand">
-            Cat
-          </a>
-          <div className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <Link to={"/cats"} className="nav-link">
-                Cats
-              </Link>
-            </li>
-            
-            <li className="nav-item">
-              <Link to={"/add"} className="nav-link">
-                Add
-              </Link>
-            </li>
-            
+ handleLogin=(isLog)=>this.setState({isLog})
+ render() {
+const {isLog}=this.state;
 
-          </div>
-        </nav>
-        <div className="container mt-3">
+
+  
+        return (
+          <div>
+          
           <Switch>
-            <Route exact path="/cats" component={CatsList} />
-            <Route exact path="/add" component={AddCat} />
-            <Route exact path="/cats/:id/edit" component={UpdateCat} />
-            <Route path="/cats/:id" component={Cat}/>
+          
+        
+          <Route  path="/login" component={LogIn} /> 
+          {
+              !isLog ?
+              <Route exact path='/' render={() => <LogIn isLogin={this.handleLogin}/>}/>
+                :
+              <Route path='/home' render={() => <Home handleLogged={this.handleLogin}/> }/>
+            } 
+         
+        <Route  path="/signup" component={SignUp} />
+        <Route path="/home" component={Home}/>
+        <Route path="/cats" component={CatsList} exact />
+         <Route exact path="/cats/:id/edit" component={UpdateCat} />
+         <Route component={NoMatch} />
           </Switch>
         </div>
-        </div>
         );
+       
     }
-}
-export default App;
+};
+

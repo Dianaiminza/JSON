@@ -1,20 +1,14 @@
 import React, {useState,useEffect} from 'react'
-import axios from 'axios';
 import {Link} from 'react-router-dom';
-
-
+import BackendService from '../config/BackendService';
 export default function CatsList() {
     const [cats, getCats] = useState([]);
     const url='http://localhost:8000/';
-
     useEffect(() => {
         getAllCats();
-        
       },[]);
-      
-
      const getAllCats=()=>{
-         axios.get(`${url}cats`)
+      BackendService.getAllCats()
          .then((response)=>{
              const allCats=response.data.rows;
            getCats(allCats);
@@ -27,6 +21,7 @@ export default function CatsList() {
        
        let selectcat=cats.find(function(cat){
         return cat.id ===catid;
+        
         });
         const yesdelete= window.confirm(`Do you want to delete ${selectcat.name}?`);
         
@@ -42,10 +37,10 @@ export default function CatsList() {
       };
 
       let baseurl = 'http://localhost:8000/cats/' +selectcat.id;
-      fetch(baseurl, requestOptions)
-          .then((res) => {
-              return res.json();
-          })
+      BackendService.getAllCats(baseurl, requestOptions)
+          // .then((res) => {
+          //     return res.json();
+          // })
           .then((results) => {
               if (results) {
                   alert("Deleted successfully!");
@@ -62,6 +57,7 @@ export default function CatsList() {
   }
     return (
      <div className="cat">
+     <table name="cat">
      <tr>
        <th>Id</th>
        <th>Name</th>
@@ -75,19 +71,10 @@ export default function CatsList() {
      <td><Link to={`/cats/${cat.id}/edit`}>Edit</Link></td>
      <td><Link onClick={() => deleteCat(cat.id)}>Delete</Link></td>
     </tr>
-
-
       ))
-
       }
-      
-
+      </table>
      </div> 
-
-
-    
-    )
-   
-   
+    )  
 }
 

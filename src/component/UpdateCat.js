@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Row, Form, Col, Button,FormGroup,Label,Input } from 'reactstrap';
 import { Link } from "react-router-dom";
-const BaseapiUrl = 'http://localhost:8000/cats';
+import BackendService from '../config/BackendService';
+const BaseapiUrl = 'http://localhost:8000/cats/';
 class UpdateCat extends Component {
     constructor(props) {
         super(props);
@@ -20,8 +21,6 @@ class UpdateCat extends Component {
         })
 
     }
-   
-    
     componentDidMount() {
         var catid = this.props.match.params.id;
        this.GetCatById(catid);
@@ -31,6 +30,7 @@ class UpdateCat extends Component {
     GetCatById(catid) {
         const apiUrl = BaseapiUrl + "/"+catid;
         fetch(apiUrl)
+        // BackendService.GetCatById(apiUrl)
             .then(res => res.json())
             .then(
                 (result) => {
